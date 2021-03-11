@@ -73,7 +73,7 @@
     bindEvents() {
       this.onKeyDown = this.onKeyDown.bind(this);
       this.onClick = this.onClick.bind(this);
-      this.onMouseMove = this.onMouseMove.bind(this);
+      //this.onMouseMove = this.onMouseMove.bind(this);
       this.onMouseLeave = this.onMouseLeave.bind(this);
 
       this.bindControls();
@@ -82,7 +82,7 @@
 
     bindControls() {
       window.addEventListener('keydown', this.onKeyDown);
-      window.addEventListener('mousemove', this.onMouseMove);
+      //window.addEventListener('mousemove', this.onMouseMove);
       this.el.addEventListener('click', this.onClick);
       //this.el.addEventListener('mouseleave', this.onMouseLeave);
     }
@@ -95,7 +95,7 @@
 
     onKeyDown(e) {
       //e.code === 'Enter' && this.triggerEvent(EVENT.HIT, this.data[this.currentCoverIndex]);
-      e.code === 'Enter' && this.params.hit && this.params.hit(this);
+      e.code === 'Enter' && this.params.hit && this.triggerEvent(EVENT.HIT, this.data[this.currentCoverIndex]);//this.params.hit(this);
       e.code === 'ArrowLeft' && this.prev();
       e.code === 'ArrowRight' && this.next();
     }
@@ -336,7 +336,7 @@
     template: `<img src="{{content}}" />`,
     data: [],
     //displayField: 'src',
-    displayField: 'poster_path',
+    displayField: 'cover',
     mirrors: true,
     showStatus: true,
 
@@ -350,23 +350,22 @@
   });
 
   coverflow
-    /*
     .on('hit', function(e) {
       console.log('hit', e);
       this.lock({overlay: false});
-      landing.show(e.poster_path).then(() =>
+      landing.show(e.cover).then(() =>
         this.unlock()
       );
     })
-    */
     .on('dataRequest', function(e) {
       console.log('DATA_REQUEST')
 
       this.lock();
 
       dataset.load().then(res => {
-        this.append(res)
-        //this.unlock();
+        res[0]
+          ?this.append(res)
+          :this.unlock();
       });
     })
     .on('firstCover', function() {

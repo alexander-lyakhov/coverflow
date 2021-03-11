@@ -1,12 +1,13 @@
 const dataset = {
-  url: 'http://react-cdp-api.herokuapp.com/movies?search=&searchBy=title&sortBy=title&sortOrder=asc',
-  offset: 0, limit: 12,
+  //url: 'http://react-cdp-api.herokuapp.com/movies?search=&searchBy=title&sortBy=title&sortOrder=asc',
+  url: 'http://my-json-server.typicode.com/alexander-lyakhov/coverflow/images',
+  page: 1, limit: 10,
   load() {
-    return fetch(this.url + `&offset=${this.offset}&limit=${this.limit}`)
+    return fetch(this.url + `?_page=${this.page}&_limit=${this.limit}`)
       .then(res => res.json())
       .then(res => {
-        this.offset += this.limit;
-        return res.data;
+        res[0] && this.page++;
+        return res;
       })
   }
 }
