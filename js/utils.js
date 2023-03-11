@@ -28,7 +28,7 @@ class Landing {
     this.landing.className = 'landing';
 
     this.overlay = document.createElement('div');
-    this.overlay.className = 'overlay';
+    this.overlay.className = 'landing__overlay';
 
     this.img = document.createElement('img');
 

@@ -353,7 +353,7 @@
   });
 
   coverflow
-      /*
+    /*
     .on('hit', function(e) {
       console.log('hit', e);
       this.lock({overlay: false});
