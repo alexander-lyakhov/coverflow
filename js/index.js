@@ -335,7 +335,7 @@
   const coverflow = new Coverflow({
     el: '#coverflow',
     template: `<img src="{{content}}" />`,
-    data: images,
+    data: images3,
     //displayField: 'src',
     // displayField: 'cover',
     mirrors: true,
@@ -343,7 +343,7 @@
 
     /*
     hit: (ctx) => {
-      ctx.lock({overlay: false});
+      ctx.lock({overlay: true});
       landing
         .show(ctx.selectedItem.poster_path)
         .then(() => ctx.unlock()
@@ -357,10 +357,12 @@
     .on('hit', function(e) {
       console.log('hit', e);
       this.lock({overlay: false});
-      landing.show(e.cover).then(() =>
+      landing.show(e).then(() =>
         this.unlock()
       );
     })
+    */
+    /*
     .on('dataRequest', function(e) {
       console.log('DATA_REQUEST')
 
