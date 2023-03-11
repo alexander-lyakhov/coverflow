@@ -56,9 +56,10 @@
 
       //this.bindEvents();
       this.render(COVER_CENTER); // class offset index
-      console.log(this.selectedCover, this.data)
-      this.bindEvents();
 
+      console.log(this.selectedCover, this.data)
+
+      this.bindEvents();
       this.updateStatus();
     }
 
@@ -334,12 +335,13 @@
   const coverflow = new Coverflow({
     el: '#coverflow',
     template: `<img src="{{content}}" />`,
-    data: [],
+    data: images,
     //displayField: 'src',
-    displayField: 'cover',
+    // displayField: 'cover',
     mirrors: true,
     showStatus: true,
 
+    /*
     hit: (ctx) => {
       ctx.lock({overlay: false});
       landing
@@ -347,9 +349,11 @@
         .then(() => ctx.unlock()
       );
     }
+    */
   });
 
   coverflow
+      /*
     .on('hit', function(e) {
       console.log('hit', e);
       this.lock({overlay: false});
@@ -368,6 +372,7 @@
           :this.unlock();
       });
     })
+    */
     .on('firstCover', function() {
       console.log('firstCover')
     })
@@ -383,11 +388,13 @@
       //landing.show(e.poster_path);
     })
 
+  /*
   coverflow.lock();
   dataset.load().then(res => {
     coverflow.append(res);
     coverflow.unlock();
   });
+  */
 
   //console.log(coverflow.events)
 })()
