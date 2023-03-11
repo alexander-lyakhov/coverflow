@@ -32,7 +32,7 @@
 
       // Selectors
       this.el = document.querySelector(params.el || '.cover-flow');
-      this.coverList = this.el.querySelector('.cover-list');
+      this.coverElements = this.el.querySelector('.cover-elements');
       this.frame = this.el.querySelector('.cover-frame');
       this.counterCurrent  = this.el.querySelector('.cover-frame__left-bottom');
       this.counterTotal = this.el.querySelector('.cover-frame__right-bottom');
@@ -180,7 +180,7 @@
         const cover = this.createCover(classOffset, coverContent);
 
         this.covers.unshift(cover);
-        this.coverList.insertBefore(cover, this.coverList.children[0]);
+        this.coverElements.insertBefore(cover, this.coverElements.children[0]);
 
         return 0;
       }
@@ -201,7 +201,7 @@
         const cover = this.createCover(classOffset, coverContent);
 
         this.covers.push(cover);
-        this.coverList.appendChild(cover);
+        this.coverElements.appendChild(cover);
 
         return this.limit - this.covers.length;
       }
