@@ -396,5 +396,6 @@
   });
   */
 
+
   //console.log(coverflow.events)
 })()
