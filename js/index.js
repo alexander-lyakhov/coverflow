@@ -246,7 +246,7 @@
       this.trackAnimation();
 
       this.covers.forEach((item, index) => {
-        item.className = `cover ${coverClasses[index + offset]}`
+        item.className = `cover ${coverClasses[index + offset]}`;
       });
     }
 
