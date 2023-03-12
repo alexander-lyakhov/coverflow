@@ -66,7 +66,7 @@ html, body  {
   align-items: center;
   //cursor: url('../right.svg'), auto;
 
-  &.locked:after {
+  &.is-locked:after {
     content: '';
     background: #000;
     display: block;
@@ -79,7 +79,7 @@ html, body  {
     z-index: 1;
   }
 
-  &.locked:before {
+  &.is-locked:before {
     content: attr(data-status-text);
     font-size: .75rem;
     background: #000;

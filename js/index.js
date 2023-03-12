@@ -51,7 +51,7 @@
       this.currentCoverIndex = 0;
       this.limit = 5;
       this.events = {};
-      this.locked = false;
+      // this.isLocked = false;
       this.elementAbsoluteXCenter = this.el.getBoundingClientRect().left + (this.el.offsetWidth >> 1);
 
       //this.bindEvents();
@@ -74,23 +74,17 @@
     bindEvents() {
       this.onKeyDown = this.onKeyDown.bind(this);
       this.onClick = this.onClick.bind(this);
-      //this.onMouseMove = this.onMouseMove.bind(this);
-      this.onMouseLeave = this.onMouseLeave.bind(this);
 
       this.bindControls();
-      //this.unlock(); // bind controls
     }
 
     bindControls() {
       window.addEventListener('keydown', this.onKeyDown);
-      //window.addEventListener('mousemove', this.onMouseMove);
       this.el.addEventListener('click', this.onClick);
-      //this.el.addEventListener('mouseleave', this.onMouseLeave);
     }
 
     unbindControls() {
       window.removeEventListener('keydown', this.onKeyDown);
-      window.removeEventListener('mousemove', this.onMouseMove);
       this.el.removeEventListener('click', this.onClick);
     }
 
@@ -105,82 +99,52 @@
       console.log('click', e)
 
       if (e.target === this.frame) {
-        this.triggerEvent(EVENT.HIT, this.data[this.currentCoverIndex]);
-        return;
+        return this.triggerEvent(EVENT.HIT, this.data[this.currentCoverIndex]);
       }
 
       e.clientX < this.elementAbsoluteXCenter ? this.prev():this.next();
     }
 
-    onMouseMove(e) {
-      //console.log(e.target);
+    // createCover(index, content) {
+    createCover(nextInsertItemIndex = 0, index = 0) {
+      let content = this.displayField ?
+        this.data[nextInsertItemIndex][this.displayField]:
+        this.data[nextInsertItemIndex];
 
-      /*
-      if (e.target === this.frame) {
-        this.arrowLeft.classList.add('hidden');
-        this.arrowRight.classList.add('hidden');
-        return;
-      }
+      let $cover = document.createElement('li');
+        $cover.className = `cover ${coverClasses[index]}`;
 
-      if (e.clientX < this.elementAbsoluteXCenter) {
-        if (this.mouseDirection !== -1) {
-          this.mouseDirection = -1;
-          this.arrowLeft.classList.remove('hidden');
-          this.arrowRight.classList.add('hidden');
-        }
-      } else {
-        if (this.mouseDirection !== 1) {
-          this.mouseDirection = 1;
-          this.arrowLeft.classList.add('hidden');
-          this.arrowRight.classList.remove('hidden');
-        }
-      }
-      */
-    }
+      let $coverContent = document.createElement('div');
+        $coverContent.className = 'cover-content';
+        $coverContent.innerHTML = this.template.replace(`{{content}}`, content);
 
-    onMouseLeave(e) {
-      console.log('--> mouseleave', e);
-    }
-
-    createCover(index, content) {
-      let cover = document.createElement('li');
-        cover.className = `cover ${coverClasses[index]}`;
-
-      let coverContent = document.createElement('div');
-        coverContent.className = 'cover-content';
-        coverContent.innerHTML = this.template.replace(`{{content}}`, content);
-
-      cover.appendChild(coverContent);
+      $cover.appendChild($coverContent);
 
       if (this.mirrors) {
-        let mirror = coverContent.cloneNode(true);
-          mirror.classList.add('mirror');
+        let $mirror = $coverContent.cloneNode(true);
+          $mirror.classList.add('mirror');
 
-        let fader = document.createElement('div');
-          fader.className = 'fader';
+        let $fader = document.createElement('div');
+          $fader.className = 'fader';
 
-        cover.appendChild(mirror);
-        cover.appendChild(fader);
+        $cover.appendChild($mirror);
+        $cover.appendChild($fader);
       }
 
-      return cover;
+      return $cover;
     }
 
     removeCover(cover) {
       cover.parentNode.removeChild(cover);
     }
 
-    addCoverToFront(nextInsertItemIndex = 0, classOffset = 0) {
+    addCoverToFront(nextInsertItemIndex = 0, coverIndex = 0) {
       if (this.data[nextInsertItemIndex]) {
 
-        const coverContent = this.displayField ?
-          this.data[nextInsertItemIndex][this.displayField]:
-          this.data[nextInsertItemIndex];
+        const $cover = this.createCover(nextInsertItemIndex, coverIndex);
 
-        const cover = this.createCover(classOffset, coverContent);
-
-        this.covers.unshift(cover);
-        this.coverElements.insertBefore(cover, this.coverElements.children[0]);
+        this.covers.unshift($cover);
+        this.coverElements.insertBefore($cover, this.coverElements.children[0]);
 
         return 0;
       }
@@ -189,19 +153,13 @@
       return 3 - this.currentCoverIndex;
     }
 
-    addCoverToBack(nextInsertItemIndex = 0, classOffset = 4) {
+    addCoverToBack(nextInsertItemIndex = 0, coverIndex = 4) {
       if (this.data[nextInsertItemIndex]) {
 
-        const coverContent = this.displayField ?
-          this.data[nextInsertItemIndex][this.displayField]:
-          this.data[nextInsertItemIndex];
+        const $cover = this.createCover(nextInsertItemIndex, coverIndex);
 
-        //console.log('addCoverToBack', this.data.length, coverContent)
-
-        const cover = this.createCover(classOffset, coverContent);
-
-        this.covers.push(cover);
-        this.coverElements.appendChild(cover);
+        this.covers.push($cover);
+        this.coverElements.appendChild($cover);
 
         return this.limit - this.covers.length;
       }
@@ -307,13 +265,13 @@
     lock(params = {overlay: true}) {
       console.log('LOCK');
       this.unbindControls();
-      params.overlay && this.el.classList.add('locked');
+      params.overlay && this.el.classList.add('is-locked');
     }
 
     unlock() {
       console.log('UNLOCK')
       this.bindControls();
-      this.el.classList.remove('locked');
+      this.el.classList.remove('is-locked');
     }
 
     render(classOffset = 0) {
