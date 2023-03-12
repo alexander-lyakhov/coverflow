@@ -104,13 +104,17 @@ html, body  {
   */
 }
 
+$w: 280;
+$h: 280;
+$framePadding: 32;
+
 .cover-frame {
-  width: 352px;
-  height: 352px;
+  width: #{$w + $framePadding}px;
+  height: #{$h + $framePadding}px;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin: -176px 0 0 -176px;
+  margin: -#{($h + $framePadding) / 2}px 0 0 -#{($w + $framePadding) / 2}px;
   z-index: 1;
   cursor: pointer;
 
@@ -187,12 +191,12 @@ html, body  {
 .cover {
   font-size: 8rem;
   color: #cee;
-  width: 320px;
-  height: 320px;
+  width: #{$w}px;
+  height: #{$h}px;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin: -160px 0 0 -160px;
+  margin: -#{$h / 2}px 0 0 -#{$w / 2}px;
   transform-style: preserve-3d;
   transform-origin: center center;
   transition: transform .6s, opacity .6s;
@@ -230,12 +234,12 @@ html, body  {
   }
 
   &-left-2, &-1 {
-    transform: translateX(-480px) rotateY(90deg) scale(0.75, 0.75);
+    transform: translateX(-#{$w * 1.7}px) rotateY(90deg) scale(0.75, 0.75);
     opacity: 0;
   }
 
   &-left-1, &-2 {
-    transform: translateX(-320px) rotateY(45deg) scale(0.75, 0.75);
+    transform: translateX(-#{$w}px) rotateY(45deg) scale(0.75, 0.75);
   }
 
   &-center, &-3 {
@@ -244,11 +248,11 @@ html, body  {
   }
 
   &-right-1, &-4 {
-    transform: translateX(320px) rotateY(-45deg) scale(0.75, 0.75);
+    transform: translateX(#{$w}px) rotateY(-45deg) scale(0.75, 0.75);
   }
 
   &-right-2, &-5 {
-    transform: translateX(480px) rotateY(-90deg) scale(0.75, 0.75);
+    transform: translateX(#{$w * 1.7}px) rotateY(-90deg) scale(0.75, 0.75);
     opacity: 0;
   }
 }
