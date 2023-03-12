@@ -105,12 +105,12 @@ html, body  {
 }
 
 .cover-frame {
-  width: 288px;
-  height: 288px;
+  width: 352px;
+  height: 352px;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin: -144px 0 0 -144px;
+  margin: -176px 0 0 -176px;
   z-index: 1;
   cursor: pointer;
 
@@ -187,12 +187,12 @@ html, body  {
 .cover {
   font-size: 8rem;
   color: #cee;
-  width: 256px;
-  height: 256px;
+  width: 320px;
+  height: 320px;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin: -128px 0 0 -128px;
+  margin: -160px 0 0 -160px;
   transform-style: preserve-3d;
   transform-origin: center center;
   transition: transform .6s, opacity .6s;
@@ -235,7 +235,7 @@ html, body  {
   }
 
   &-left-1, &-2 {
-    transform: translateX(-256px) rotateY(45deg) scale(0.75, 0.75);
+    transform: translateX(-320px) rotateY(45deg) scale(0.75, 0.75);
   }
 
   &-center, &-3 {
@@ -244,7 +244,7 @@ html, body  {
   }
 
   &-right-1, &-4 {
-    transform: translateX(256px) rotateY(-45deg) scale(0.75, 0.75);
+    transform: translateX(320px) rotateY(-45deg) scale(0.75, 0.75);
   }
 
   &-right-2, &-5 {
