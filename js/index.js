@@ -43,39 +43,26 @@
       this.data = params.data || [];
       this.displayField = params.displayField || null;
       this.template = params.template || `<div>{{content}}</div>`;
-      this.mirrors = Boolean(params.mirrors);
-      this.showStatus = params.showStatus || false;
 
       // Component internal properties
       this.covers = [];
       this.currentCoverIndex = 0;
       this.limit = 5;
       this.events = {};
-      // this.isLocked = false;
       this.elementAbsoluteXCenter = this.el.getBoundingClientRect().left + (this.el.offsetWidth >> 1);
 
-      //this.bindEvents();
+      //
+      this.onKeyDown = this.onKeyDown.bind(this);
+      this.onClick = this.onClick.bind(this);
+
+      //
       this.render(COVER_CENTER); // class offset index
-
-      console.log(this.selectedCover, this.data)
-
-      this.bindEvents();
+      this.bindControls();
       this.updateStatus();
-    }
-
-    get selectedItem() {
-      return this.data[this.currentCoverIndex];
     }
 
     get selectedCover() {
       return this.covers[COVER_CENTER];
-    }
-
-    bindEvents() {
-      this.onKeyDown = this.onKeyDown.bind(this);
-      this.onClick = this.onClick.bind(this);
-
-      this.bindControls();
     }
 
     bindControls() {
@@ -96,16 +83,12 @@
     }
 
     onClick(e) {
-      console.log('click', e)
-
       if (e.target === this.frame) {
         return this.triggerEvent(EVENT.HIT, this.data[this.currentCoverIndex]);
       }
-
       e.clientX < this.elementAbsoluteXCenter ? this.prev():this.next();
     }
 
-    // createCover(index, content) {
     createCover(nextInsertItemIndex = 0, index = 0) {
       let content = this.displayField ?
         this.data[nextInsertItemIndex][this.displayField]:
@@ -120,7 +103,7 @@
 
       $cover.appendChild($coverContent);
 
-      if (this.mirrors) {
+      if (!!this.params.mirrors) {
         let $mirror = $coverContent.cloneNode(true);
           $mirror.classList.add('mirror');
 
@@ -170,21 +153,19 @@
 
     prev() {
       if (this.currentCoverIndex > 0) {
-        if (this.covers[this.covers.length - 1].classList.contains('cover-right-2')) {
-          this.removeCover(this.covers[this.covers.length - 1]);
+        if (this.covers.at(-1).classList.contains('cover-right-2')) {
+          this.removeCover(this.covers.at(-1));
           this.covers.pop();
         }
-
         const res = this.addCoverToFront(this.currentCoverIndex - 3);
         this.move(res);
 
         this.currentCoverIndex--;
       }
 
-      if (this.currentCoverIndex === 0) {
+      !this.currentCoverIndex &&
         this.triggerEvent(EVENT.FIRST_COVER);
-      }
-
+      
       this.updateStatus();
     }
 
@@ -200,7 +181,6 @@
           this.removeCover(this.covers[0]);
           this.covers.shift();
         }
-
         const res = this.addCoverToBack(this.currentCoverIndex + 3);
         this.move(res);
 
@@ -217,27 +197,20 @@
     append(data) {
       this.data = [...this.data, ...data];
 
-      if (this.covers.length) {
-        this.next();
-      } else {
-        this.render(COVER_CENTER);
-      }
+      this.covers.length
+        ? this.next()
+        : this.render(COVER_CENTER);
 
       this.updateStatus();
     }
 
     trackAnimation() {
-      console.log('trackAnimation', this.selectedCover);
-
       this.lock({overlay: false});
-
       this.untrack = this.untrackAnimation.bind(this);
       this.selectedCover.addEventListener('transitionend', this.untrack);
     }
 
     untrackAnimation(e) {
-      console.log('untrackAnimation', e.target)
-
       this.unlock();
       e.target.removeEventListener('transitionend', this.untrack);
     }
@@ -251,7 +224,7 @@
     }
 
     updateStatus() {
-      if (this.showStatus && this.data.length) {
+      if (!!this.params.showStatus && this.data.length) {
         this.counterCurrent.dataset.current = this.currentCoverIndex + 1;
         this.counterTotal.dataset.total = this.data.length;
       }
@@ -263,13 +236,11 @@
     }
 
     lock(params = {overlay: true}) {
-      console.log('LOCK');
       this.unbindControls();
       params.overlay && this.el.classList.add('is-locked');
     }
 
     unlock() {
-      console.log('UNLOCK')
       this.bindControls();
       this.el.classList.remove('is-locked');
     }
